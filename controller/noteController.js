@@ -55,11 +55,23 @@ const deleteNote = async (req, res) => {
   const id = req.params.noteid;
   try {
     const note = await noteModal.findByIdAndRemove(id);
-    res.status(201).json({
-      status: true,
-      note: note,
-      message: "Note deleted Successfully",
-    });
+
+    if(note==null)
+    {
+      res.status(200).json({
+        status: true,
+        message: "Note Already deleted",
+      });
+    }else{
+
+      res.status(200).json({
+        status: true,
+        note: note,
+        message: "Note deleted Successfully",
+      });
+      
+    }
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
