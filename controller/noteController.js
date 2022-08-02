@@ -6,8 +6,9 @@ const createNote = async (req, res) => {
   const userNote = new noteModal({
     title: title,
     description: description,
-    userid: req.userid,
+    userid: req.userId,
   });
+  console.log("From Note Controller"+req.userId)
 
   try {
     await userNote.save();

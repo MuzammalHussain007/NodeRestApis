@@ -8,7 +8,8 @@ const auth = (req, res, next) => {
     if (tokenSend) {
       tokenSend = tokenSend.split(" ")[1];
       let user = jwt.verify(tokenSend, SECRET_KEY);
-      req.user = user.id;
+      req.userId = user.id;
+console.log("Console From Auth.js"+user.id);
     } else {
       res.status(401).json({
         status: false,
