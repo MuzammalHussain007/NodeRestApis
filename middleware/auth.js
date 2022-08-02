@@ -9,8 +9,7 @@ const auth = (req, res, next) => {
       tokenSend = tokenSend.split(" ")[1];
       let user = jwt.verify(tokenSend, SECRET_KEY);
       req.userId = user.id;
-console.log("Console From Auth.js"+user.id);
-    } else {
+     } else {
       res.status(401).json({
         status: false,
         message: "Invalid User",

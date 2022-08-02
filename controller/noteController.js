@@ -8,8 +8,6 @@ const createNote = async (req, res) => {
     description: description,
     userid: req.userId,
   });
-  console.log("From Note Controller"+req.userId)
-
   try {
     await userNote.save();
     res.status(201).json({
@@ -33,16 +31,27 @@ const updateNote = async (req, res) => {
   const userNote = {
     title: title,
     description: description,
-    userid: id,
+    userid: req.userId,
   };
 
   try {
-    await noteModal.findByIdAndUpdate(id, userNote, { new: true });
-    res.status(201).json({
-      status: true,
-      note: userNote,
-      message: "Note Updated Successfully",
-    });
+     const note = await noteModal.findByIdAndUpdate(id, userNote, { new: true });
+     console.log(note);
+     if(note==null)
+     {
+      res.status(201).json({
+        status: false,
+        note: note,
+        message: "Notes Not Found",
+      });
+     }else{
+      res.status(201).json({
+        status: true,
+        note: note,
+        message: "Note Updated Successfully",
+      });
+     }
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -84,7 +93,7 @@ const deleteNote = async (req, res) => {
 
 const getNote = async (req, res) => {
   try {
-    const userNote = await noteModal.find({ userid: req.userid });
+    const userNote = await noteModal.find({ userid: req.userId });
     res.status(201).json({
       status: true,
       notes: userNote,
