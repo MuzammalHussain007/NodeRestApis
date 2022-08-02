@@ -10,7 +10,7 @@ const {
 
 noteRouter.post("/addnote", auth, createNote);
 noteRouter.get("/getnote", auth, getNote);
-noteRouter.delete("/noteid", auth, deleteNote);
-noteRouter.put("/noteid", auth, updateNote);
+noteRouter.delete("/:noteid", auth, deleteNote);
+noteRouter.put("/:noteid", auth, updateNote);
 
 module.exports = noteRouter;

@@ -6,9 +6,8 @@ const createNote = async (req, res) => {
   const userNote = new noteModal({
     title: title,
     description: description,
-    userid: req.userid,
+    userid: req.userId,
   });
-
   try {
     await userNote.save();
     res.status(201).json({
@@ -32,16 +31,27 @@ const updateNote = async (req, res) => {
   const userNote = {
     title: title,
     description: description,
-    userid: id,
+    userid: req.userId,
   };
 
   try {
-    await noteModal.findByIdAndUpdate(id, userNote, { new: true });
-    res.status(201).json({
-      status: true,
-      note: userNote,
-      message: "Note Updated Successfully",
-    });
+     const note = await noteModal.findByIdAndUpdate(id, userNote, { new: true });
+     console.log(note);
+     if(note==null)
+     {
+      res.status(201).json({
+        status: false,
+        note: note,
+        message: "Notes Not Found",
+      });
+     }else{
+      res.status(201).json({
+        status: true,
+        note: note,
+        message: "Note Updated Successfully",
+      });
+     }
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -55,11 +65,23 @@ const deleteNote = async (req, res) => {
   const id = req.params.noteid;
   try {
     const note = await noteModal.findByIdAndRemove(id);
-    res.status(201).json({
-      status: true,
-      note: note,
-      message: "Note deleted Successfully",
-    });
+
+    if(note==null)
+    {
+      res.status(200).json({
+        status: true,
+        message: "Note Already deleted",
+      });
+    }else{
+
+      res.status(200).json({
+        status: true,
+        note: note,
+        message: "Note deleted Successfully",
+      });
+      
+    }
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -71,7 +93,7 @@ const deleteNote = async (req, res) => {
 
 const getNote = async (req, res) => {
   try {
-    const userNote = await noteModal.find({ userid: req.userid });
+    const userNote = await noteModal.find({ userid: req.userId });
     res.status(201).json({
       status: true,
       notes: userNote,
