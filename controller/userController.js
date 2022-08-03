@@ -1,7 +1,7 @@
 const userModal = require("../modals/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = "NoteApi";
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const signin = async (req, res) => {
   const { password, email } = req.body;
@@ -46,7 +46,6 @@ const forgetPassword = async (req, res) => {
         status: false,
         message: "Current User Does not Exists",
       });
-
     }
   } catch (error) {
     console.log(error);
