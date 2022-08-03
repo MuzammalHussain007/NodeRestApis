@@ -2,9 +2,9 @@
   "name": "Node",
   "version": "1.0.0",
   "description": "",
-  "main": "nodemon index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
